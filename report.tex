@@ -1,0 +1,119 @@
+% VLDB template version of 2020-08-03 enhances the ACM template, version 1.7.0:
+% https://www.acm.org/publications/proceedings-template
+% The ACM Latex guide provides further information about the ACM template
+
+\documentclass[sigconf, nonacm]{acmart}
+
+%% The following content must be adapted for the final version
+% paper-specific
+\newcommand\vldbdoi{XX.XX/XXX.XX}
+\newcommand\vldbpages{XXX-XXX}
+% issue-specific
+\newcommand\vldbvolume{14}
+\newcommand\vldbissue{1}
+\newcommand\vldbyear{2020}
+% should be fine as it is
+\newcommand\vldbauthors{\authors}
+\newcommand\vldbtitle{\shorttitle} 
+% leave empty if no availability url should be set
+\newcommand\vldbavailabilityurl{URL_TO_YOUR_ARTIFACTS}
+% whether page numbers should be shown or not, use 'plain' for review versions, 'empty' for camera ready
+\newcommand\vldbpagestyle{plain} 
+
+\begin{document}
+\title{RepEng Project: Functional Replication of Spreadsheet Solver}
+
+%%
+%% The "author" command and its associated commands are used to define the authors and their affiliations.
+\author{Andreas Einwiller}
+\orcid{0000-0001-5109-3700}
+\affiliation{%
+  \institution{University of Passau}
+  \city{Passau}
+  \country{Germany}
+}
+\email{einwil01@ads.uni-passau.de}
+
+
+\iffalse % Remove abstract <i_1>
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+\begin{abstract}
+Praesent imperdiet, lacus nec varius placerat, est ex eleifend justo, a vulputate leo massa consectetur nunc. Donec posuere in mi ut tempus. Pellentesque sem odio, faucibus non mi in, laoreet maximus arcu. In hac habitasse platea dictumst. Nunc euismod neque eu urna accumsan, vitae vehicula metus tincidunt. Maecenas congue tortor nec varius pellentesque. Pellentesque bibendum libero ac dignissim euismod. Aliquam justo ante, pretium vel mollis sed, consectetur accumsan nibh. Nulla sit amet sollicitudin est. Etiam ullamcorper diam a sapien lacinia faucibus.
+\end{abstract}
+\fi % </i_1>
+
+\maketitle
+
+\iffalse % Remove VLDB block <i_2>
+%%% do not modify the following VLDB block %%
+%%% VLDB block start %%%
+\pagestyle{\vldbpagestyle}
+\begingroup\small\noindent\raggedright\textbf{PVLDB Reference Format:}\\
+\vldbauthors. \vldbtitle. PVLDB, \vldbvolume(\vldbissue): \vldbpages, \vldbyear.\\
+\href{https://doi.org/\vldbdoi}{doi:\vldbdoi}
+\endgroup
+\begingroup
+\renewcommand\thefootnote{}\footnote{\noindent
+This work is licensed under the Creative Commons BY-NC-ND 4.0 International License. Visit \url{https://creativecommons.org/licenses/by-nc-nd/4.0/} to view a copy of this license. For any use beyond those covered by this license, obtain permission by emailing \href{mailto:info@vldb.org}{info@vldb.org}. Copyright is held by the owner/author(s). Publication rights licensed to the VLDB Endowment. \\
+\raggedright Proceedings of the VLDB Endowment, Vol. \vldbvolume, No. \vldbissue\ %
+ISSN 2150-8097. \\
+\href{https://doi.org/\vldbdoi}{doi:\vldbdoi} \\
+}\addtocounter{footnote}{-1}\endgroup
+%%% VLDB block end %%%
+\fi % </i_2>
+
+%%% do not modify the following VLDB block %%
+%%% VLDB block start %%%
+\ifdefempty{\vldbavailabilityurl}{}{
+\vspace{.3cm}
+\begingroup\small\noindent\raggedright\textbf{PVLDB Artifact Availability:}\\
+The source code, data, and other artifacts w.r.t. the reproduction package have been made available at \url{https://github.com/iTsluku/RepEng-SpreadsheetSolver-ReproductionPackage-.git}. The equivalent for the report is available at \url{https://github.com/iTsluku/RepEng-SpreadsheetSolver-Report-.git}.
+\endgroup
+}
+%%% VLDB block end %%%
+
+\section{Introduction}
+According to Baker\cite{Baker2016}, based on a nature survey of $1,576$ scientists, more than $70\%$ of those researchers have failed to reproduce another scientist's experiment. The consequence is a loss of trust and credibility, as reconfirmation by other scientists is fundamental in the computer science domain, which is largely based on inductive reasoning. To tackle this issue, Mauerer et al.\cite{Mauerer2023} suggest that the necessary skills should be taught as part of software engineering education.\\
+This paper begins with the initial task of reproducing an experiment described in the Head First Data Analysis\cite{Milton2009} book in chapter three. Therefore, the following introduction refers to Milton\cite{Milton2009}.\\
+The essence of the described experiment is to solve a linear optimization problem. Specifically, the goal is to determine the optimal number of fish and duck bath toys that will yield the highest profit for the company. The number of products to be manufactured are decision variables, as these can be controlled. Decision variables are limited by constraints. Milton\cite{Milton2009} introduces production time and rubber supply limitations as constraints. Furthermore, it is also described how much profit a duck or a fish yields so that the total profit can be calculated based on an objective function.\\
+The task is therefore very simple: Again, decision variables are limited by constraints. Therefore, there is a range of possible values for each decision variable. According to the three scenarios described, these only contain discrete values. Depending on the scenario, additional constraints now act on the decision variables, causing the range of possible values to be potentially smaller. All this data is saved in an excel spreadsheet. To solve the linear optimization problem, i.e. determining the optimal number of duck and fish bath toys to be produced, the spreadsheet solver package introduces the excel solver function. Here, decision variable cells, the objective function and constraints must be entered manually using the solver GUI. The excel solver determines the optimal values of the decision variables and updates the corresponding cells in the excel spreadsheet.\\
+Milton\cite{Milton2009} also visualizes some charts such as representations of feasible region in a 2D plot with or without marking the optimal solution. Based on a data set with historical sales, demand is also predicted by an analyst. Accordingly, the time series of sales per product and sales in total are visualized in a chart. Depending on the analyst's observations, a new constraint per product is subsequently added, which in turn can affect the feasible region.
+
+\section{Reproducibility}
+To achieve reproducibility, one would need to achieve the same results with the artifacts of Milton\cite{Milton2009}. The calculation would have to take place in the same environment, i.e. under the same conditions, and run in exactly the same sequential order. By manually going through the described steps for the individual scenarios based on the excel spreadsheet, which was made publicly available using gitlab, I was able to generate the same new decision variable values using the spreadsheet solver. However, this did not take place under the exact same experimental setup, which is why this partial success only corresponds to a partial replication. Moreover, it was impossible to generate identical charts, as the necessary scripts are not publicly available as artifacts. Furthermore, not even the charts themselves are published. Therefore, the image comparison is not possible at all, even though the historical sales data has been published. But even with this data it is impossible to generate the exact identical chart, since information regarding color values, font size, limitation of axes etc. is missing. Hence, not only the reproduction, but also the replication of the entire project is impossible.
+
+\section{Functional Replication}
+The reproduction package of this work is limited to a partial scope and aims to replicate the functionality of the spreadsheet solver in order to achieve identical output values for all three scenarios defined by \cite{Milton2009}.\\
+The criteria for successful confirmation of the solver output values are determined by an equality comparison and visualized in Table\ref{tab:replication_results_confirmation}.
+
+\begin{table}[htbp]
+	% TODO: generate this table dynamically
+	\centering
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Scenario} & \textbf{Duck Count} & \textbf{Fish Count} & \textbf{Total Profit} \\
+		\midrule
+		Sce\_1\_Paper & 400 & 300 & 3200 \\
+		Sce\_1\_F\_Rep & 400 & 300 & 3200 \\
+		\midrule
+		Sce\_2\_Paper & 400 & 80 & 2320 \\
+		Sce\_2\_F\_Rep & 400 & 80 & 2320 \\
+		\midrule
+		Sce\_3\_Paper & 150 & 50 & 950 \\
+		Sce\_3\_F\_Rep & 150 & 50 & 950 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison of the solver outputs of the functional replication with the values from Milton\cite{Milton2009}.}
+	\label{tab:replication_results_confirmation}
+\end{table}
+
+
+%\clearpage
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{bibliography}
+
+\end{document}
+\endinput
+
