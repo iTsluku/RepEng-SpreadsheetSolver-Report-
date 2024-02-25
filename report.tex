@@ -20,6 +20,9 @@
 % whether page numbers should be shown or not, use 'plain' for review versions, 'empty' for camera ready
 \newcommand\vldbpagestyle{plain} 
 
+\usepackage{csvsimple}
+\usepackage{booktabs}
+
 \begin{document}
 \title{RepEng Project: Functional Replication of Spreadsheet Solver}
 
@@ -68,6 +71,7 @@ ISSN 2150-8097. \\
 \ifdefempty{\vldbavailabilityurl}{}{
 \vspace{.3cm}
 \begingroup\small\noindent\raggedright\textbf{Artifact Availability:}\\
+%TODO Contains a working DOI to a Zenodo project as the artifact link
 The source code, data, and other artifacts w.r.t. the reproduction package have been made available at \url{https://github.com/iTsluku/RepEng-SpreadsheetSolver-ReproductionPackage-.git}. The equivalent for the report is available at \url{https://github.com/iTsluku/RepEng-SpreadsheetSolver-Report-.git}.
 \endgroup
 }
@@ -97,7 +101,42 @@ To achieve reproducibility, one would need to achieve the same results with the 
 Moreover, it was impossible to generate identical charts, as the necessary scripts are not publicly available as artifacts. Furthermore, not even the charts themselves are published. Therefore, the image comparison is not possible at all, even though the historical sales data has been published. But even with this data it is impossible to generate the exact identical chart, since information regarding color values, font size, limitation of axes etc. is missing. Hence, not only the reproduction, but also the replication of the entire project is impossible, resulting in a partial replication at most.
 
 \section{Functional Replication}
-The reproduction package of this work is limited to a partial scope and aims to replicate the functionality of the spreadsheet solver in order to achieve identical output values for all three scenarios defined by \cite{Milton2009}. The criteria for successful confirmation of the solver output values are determined by an equality comparison with the results of Milton \cite{Milton2009}, visualized in Table \ref{tab:replication_results_confirmation}.
+The reproduction package of this work is limited to a partial scope and aims to replicate the functionality of the spreadsheet solver in order to achieve identical output values for all three scenarios defined by \cite{Milton2009}. The criteria for successful confirmation of the solver output values are determined by an equality comparison with the results of Milton \cite{Milton2009}, visualized in Table \ref{tab:paper_results}.
+
+%\begin{table}[htbp]
+%	\centering
+%	\begin{tabular}{lccc}
+%		\toprule
+%		\textbf{Scenario} & \textbf{Duck Count} & \textbf{Fish Count} & \textbf{Total Profit} \\
+%		\midrule
+%		Scenario 1 & 400 & 300 & 3200 \\
+%		Scenario 2 & 400 & 80 & 2320 \\
+%		Scenario 3 & 150 & 50 & 950 \\
+%		\bottomrule
+%	\end{tabular}
+%	\caption{Results of Milton \cite{Milton2009} to be confirmed.}
+%	\label{tab:paper_results}
+%\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\csvreader[
+	tabular=llll,
+	table head=\toprule \textbf{Scenario} & \textbf{Duck Count} & \textbf{Fish Count} & \textbf{Total Profit} \\ \midrule,
+	late after line=\\,
+	table foot=\bottomrule,
+	]{data/paper/results.csv}{1=\scenario,2=\duckcount,3=\fishcount,4=\totalprofit}{% comment here to fix formatting!
+		\scenario & \duckcount & \fishcount & \totalprofit
+	}
+	\caption{Results of Milton \cite{Milton2009} to be confirmed.}
+	\label{tab:paper_results}
+\end{table}
+	
+
+
+\section{Experimental Setup}
+
+\section{Experimental Results}
 
 \begin{table}[htbp]
 	\centering
@@ -105,14 +144,32 @@ The reproduction package of this work is limited to a partial scope and aims to 
 		\toprule
 		\textbf{Scenario} & \textbf{Duck Count} & \textbf{Fish Count} & \textbf{Total Profit} \\
 		\midrule
-		Scenario 1 & 400 & 300 & 3200 \\
-		Scenario 2 & 400 & 80 & 2320 \\
-		Scenario 3 & 150 & 50 & 950 \\
-		\bottomrule
+		\csvreader[
+		late after line=\\,
+		]{data/replication/scenario1.csv}{1=\scenario,2=\duckcount,3=\fishcount,4=\totalprofit}{%
+			\scenario & \duckcount & \fishcount & \totalprofit
+		}
+		\csvreader[
+		late after line=\\,
+		]{data/replication/scenario2.csv}{1=\scenario,2=\duckcount,3=\fishcount,4=\totalprofit}{%
+			\scenario & \duckcount & \fishcount & \totalprofit
+		}
+		\csvreader[
+		late after line=\\,
+		table foot=\bottomrule,
+		]{data/replication/scenario3.csv}{1=\scenario,2=\duckcount,3=\fishcount,4=\totalprofit}{%
+			\scenario & \duckcount & \fishcount & \totalprofit
+		}
 	\end{tabular}
-	\caption{Results of Milton \cite{Milton2009} to be confirmed.}
-	\label{tab:replication_results_confirmation}
+	\caption{Replication results to confirm results of Milton \cite{Milton2009}.}
+	\label{tab:replication_results}
 \end{table}
+
+\section{Threats To Validity}
+
+\section{Limitations}
+
+
 
 
 %\clearpage
