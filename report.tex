@@ -84,24 +84,39 @@ According to Baker \cite{Baker2016}, based on a nature survey of $1,576$ scienti
 This paper begins with the initial task of reproducing an experiment described in the Head First Data Analysis \cite{Milton2009} book in chapter three. Therefore, the following introduction refers to Milton \cite{Milton2009}.
 
 
-The essence of the described experiment is to solve a linear optimization problem. Specifically, the goal is to determine the optimal number of fish and duck bath toys that will yield the highest profit for the company. The number of products to be manufactured are decision variables, as these can be controlled. Decision variables are limited by constraints. Milton \cite{Milton2009} introduces production time and rubber supply limitations as constraints. Furthermore, it is also described how much profit a duck or a fish yields so that the total profit can be calculated based on an objective function.
+The essence of the described experiment is to solve a linear optimization problem. Specifically, the goal is to determine the optimal number of fish and duck bath toys that will yield the highest profit for the company. The number of products to be manufactured are decision variables, as these can be controlled. Decision variables are limited by constraints. Milton \cite{Milton2009} introduces production time and rubber supply limitations as constraints. Furthermore, it is also described how much profit a duck or a fish yields such that the total profit can be calculated based on an objective function.
 
 
 The task is therefore very simple: Again, decision variables are limited by constraints. Therefore, there is a range of possible values for each decision variable. According to the three scenarios described, these only contain discrete values. Depending on the scenario, additional constraints now act on the decision variables, causing the range of possible values to be potentially smaller. All this data is saved in an excel spreadsheet. To solve the linear optimization problem, i.e. determining the optimal number of duck and fish bath toys to be produced, the spreadsheet solver package introduces the excel solver function. Here, decision variable cells, the objective function and constraints must be entered manually using the solver GUI. The excel solver determines the optimal values of the decision variables and updates the corresponding cells in the excel spreadsheet.
 
 
-Milton \cite{Milton2009} also visualizes some charts such as representations of feasible region in a 2D plot with or without marking the optimal solution. Based on a data set with historical sales, demand is also predicted by an analyst. Accordingly, the time series of sales per product and sales in total are visualized in a chart. Depending on the analyst's observations, a new constraint per product is subsequently added, which in turn can affect the feasible region.
+Milton \cite{Milton2009} also visualizes various charts such as representations of feasible region in a 2D plot with or without marking the optimal solution. Based on a data set with historical sales, the demand is predicted by an analyst. Accordingly, the time series of sales per product and sales in total are visualized in a chart. Depending on the analyst's observations, a new constraint per product is subsequently added, which in turn can affect the feasible region.
 
 
 
 \section{Reproducibility}
-To achieve reproducibility, one would need to achieve the same results with the artifacts of Milton \cite{Milton2009}. The calculation would have to take place in the same environment, i.e. under the same conditions, and run in exactly the same sequential order. By manually going through the described steps for the individual scenarios based on the excel spreadsheet, which was made publicly available using gitlab, I was able to generate the same new decision variable values using the spreadsheet solver. However, this did not take place under the exact same experimental setup, which is why this partial success only corresponds to a replication.
+To achieve reproducibility, one would need to accomplish the same results with the artifacts of Milton \cite{Milton2009}. The computations would have to take place in the same environment, i.e. under the same conditions, and run in exactly the same sequential order. By manually going through the described steps for the individual scenarios based on the excel spreadsheet, which was made publicly available using gitlab, I was able to generate the same new decision variable values using the spreadsheet solver. However, this did not take place under the exact same experimental setup, which is why this success only corresponds to a replication.
 
 
-Moreover, it was impossible to generate identical charts, as the necessary scripts are not publicly available as artifacts. Furthermore, not even the charts themselves are published. Therefore, the image comparison is not possible at all, even though the historical sales data has been published. But even with this data it is impossible to generate the exact identical chart, since information regarding color values, font size, limitation of axes etc. is missing. Hence, not only the reproduction, but also the replication of the entire project is impossible, resulting in a partial replication at most.
+Moreover, it was impossible to generate identical charts, as the necessary scripts are not publicly available as artifacts. Furthermore, not even the final charts themselves are published. Therefore, the image comparison is not possible at all, even though the underlying historical sales data has been published. But even with this data it is impossible to generate the exact identical chart, since information regarding color values, font size, limitation of axes etc. is missing. Hence, not only the reproduction, but also the replication of the project as a whole is impossible, resulting in a partial replication at most.
+
+
 
 \section{Functional Replication}
-The reproduction package of this work is limited to a partial scope and aims to replicate the functionality of the spreadsheet solver in order to achieve identical output values for all three scenarios defined by \cite{Milton2009}. The criteria for successful confirmation of the solver output values are determined by an equality comparison with the results of Milton \cite{Milton2009}, visualized in Table \ref{tab:paper_results}.
+\label{sec:functional-replication}
+Since the reproduction is not possible and the project as a whole cannot be replicated, this work aims for a partial replication by automating the GUI component of the Excel solver. Consequently, the visualizations of feasible regions and historical product sales is defined as ``out of scope''.
+
+
+This functional replication should make it possible to automatically compute the optimal values for the decision variables and the total profit for the three scenarios described by Milton \cite{Milton2009}. The criterion for a successful confirmation of the results is an equality comparison of the results of Milton \cite{Milton2009}, visualized in \autoref{tab:paper-results}, with the automatically computed results of the functional replication. 
+
+
+In the first scenario, there is a time constraint on the production of duck and fish toys. The maximum profit of 3200 can be achieved by producing 400 duckies and 300 fish. 
+
+
+The second scenario adds a constraint on the supply of rubber, which results in an optimal total profit of 2320 from 400 duckies and 80 fish. Duckies are produced primarily because they generate more revenue than fish. 
+
+Since demand in reality has a significant influence on the products actually sold and therefore the revenue generated with them, in scenario three it is precisely this demand that is added as a constraint for the individual products by means of a forecasted upper limit. The maximum profit here is 950 and is composed of the sale of 150 duckies and 50 fish toys.
+
 
 %\begin{table}[htbp]
 %	\centering
@@ -124,19 +139,31 @@ The reproduction package of this work is limited to a partial scope and aims to 
 	tabular=llll,
 	table head=\toprule \textbf{Scenario} & \textbf{Duck Count} & \textbf{Fish Count} & \textbf{Total Profit} \\ \midrule,
 	late after line=\\,
-	table foot=\bottomrule,
+	table foot=\hline,
 	]{data/paper/results.csv}{1=\scenario,2=\duckcount,3=\fishcount,4=\totalprofit}{% comment here to fix formatting!
 		\scenario & \duckcount & \fishcount & \totalprofit
 	}
 	\caption{Results of Milton \cite{Milton2009} to be confirmed.}
-	\label{tab:paper_results}
+	\label{tab:paper-results}
 \end{table}
 	
 
 
 \section{Experimental Setup}
+To ensure the reproducibility of the functional replication, the entire project is dockerized. A docker image can be built, allowing docker containers to be created and executed, providing an environment with all necessary dependencies and artifacts. The container contains a dispatcher which triggers a pipeline, causing a series of scripts to be executed sequentially. This includes the execution of the experiments, the evaluation and generation of this report.
+
+
+The Excel solver GUI component must be replaced in order to be able to execute the scenarios described in \cite{Milton2009} automatically - this represents the underlying contribution of this functional replication. To achieve this, the Python module \textit{spreadsheet\_solver} was implemented. Furthermore, the \textit{main.py} script contains a CLI whereby the functionality of the \textit{spreadsheet\_solver} module can be used depending on a passed \textit{config} file. For each of the three scenarios described in \cite{Milton2009} a corresponding \textit{config} file exists. Thus, all three experiments can be executed automatically. The \textit{config} files contain information about decision variables, constraints, the criterion of the experiment and a timeout parameter, which specifies after how many seconds the program should be forced to abort if no optimal solution has been calculated by then. The format, language and syntax of the \textit{config} has been adapted to the format of the excel solver GUI. Furthermore, the validity of the configuration is checked during parsing and handled accordingly.
+
+
+The module contains the individual data types, i.e. decision variables and constraints. Decision variables have a lower and upper bound, and a count that is determined by the solver. Constraint variables consist of a linear combination of decision variables, their costs, an operator, and a constraint value. The solver follows a naive brute-force approach and optimizes the counts of the decision variables depending on the defined criteria. For this purpose, it recursively iterates over the range between the lower and upper bound of all decision variables and checks whether one of the constraints is violated. If this is not the case and a new optimum is achieved with this iteration, i.e. this possible permutation of the decision variable count values, then the intermediate optimum is updated accordingly. Consequently, if we run through all possibilities, we obtain the optimum result depending on the constraints and the criterion.
+
+The optimum counts of the decision variables are saved in a CSV file, which allows a table to be created when the report is generated. Running through all three scenarios therefore results in three csv files. The result of these scenarios is shown in \autoref{tab:replication-results}.
+
+
 
 \section{Experimental Results}
+\autoref{tab:replication-results} summarizes the results of the replication. Note that \autoref{tab:paper-results} and \autoref{tab:replication-results} share the same format, see \autoref{sec:functional-replication}. Identical values mean that the functional replication was successful.
 
 \begin{table}[htbp]
 	\centering
@@ -156,20 +183,25 @@ The reproduction package of this work is limited to a partial scope and aims to 
 		}
 		\csvreader[
 		late after line=\\,
-		table foot=\bottomrule,
 		]{data/replication/scenario3.csv}{1=\scenario,2=\duckcount,3=\fishcount,4=\totalprofit}{%
 			\scenario & \duckcount & \fishcount & \totalprofit
 		}
+	\bottomrule
 	\end{tabular}
 	\caption{Replication results to confirm results of Milton \cite{Milton2009}.}
-	\label{tab:replication_results}
+	\label{tab:replication-results}
 \end{table}
 
-\section{Threats To Validity}
+\section{Discussion}
+In order to replace the GUI component of the Excel solver, the values that would otherwise have been entered into the GUI by the user w.r.t. a scenario had to be stored in a configuration file. However, this only applies to the constraints. Data regarding the decision variables could have been retrieved from the Excel spreadsheet directly. To do so, the Excel spreadsheet could have been patched into a generic format, which could then have been parsed accordingly. This was not implemented due to time constraints and the values were directly added to the semi-structured YAML configuration file. YAML was used because it was considered more convenient for an average Excel user compared to alternatives like JSON. The required schema is nevertheless validated during parsing.
 
-\section{Limitations}
+The Excel solver solves Linear Programming problems with the Simplex Algorithm. Given a space, spanning the decision variables and adding constraints creates a convex polyhedron. The intersections of the constraints yield nodes, which are iteratively evaluated to determine the optimal solution. This approach is of course much more efficient than the brute-force approach pursued here, in which every combination is evaluated. The brute-force approach has a run-time complexity of $\mathcal{O}(m^n)$, with m being the maximal margin between lower and upper bound over all decision variables and n being the number of decision variables, whereas the Simplex Algorithm has polynomial-time average-case complexity. The Simplex Algorithm therefore performs very well in practice, even though it also has an exponential run-time in the worst-case. As the functional replication is limited to similarly simple scenarios with linear combinations of a few decision variables, the run-time is negligible. However, a $100$ second timeout safeguard was implemented analogous to the Excel solver, which interrupts the computation after $100$ seconds if no optimal solution can be determined within that time.
+
+% didnt parse excel file
 
 
+\section{Threats to Validity}
+Components of the functional replication were developed with great care. However, due to time constraints, test-driven development could not be applied. Therefore, unit tests to cover the core functionality could not be implemented. As a result, there is a degree of uncertainty, particularly when configuring new scenarios with significantly more decision variables and constraints.
 
 
 %\clearpage
