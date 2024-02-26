@@ -72,7 +72,7 @@ ISSN 2150-8097. \\
 \vspace{.3cm}
 \begingroup\small\noindent\raggedright\textbf{Artifact Availability:}\\
 %TODO Contains a working DOI to a Zenodo project as the artifact link
-The source code, data, and other artifacts w.r.t. the reproduction package have been made available at \url{https://github.com/iTsluku/RepEng-SpreadsheetSolver-ReproductionPackage-.git}. The equivalent for the report is available at \url{https://github.com/iTsluku/RepEng-SpreadsheetSolver-Report-.git}.
+The source code, data, and other artifacts w.r.t. the reproduction package have been made available at \url{https://doi.org/10.5281/zenodo.10713048}.
 \endgroup
 }
 %%% VLDB block end %%%
@@ -90,7 +90,7 @@ The essence of the described experiment is to solve a linear optimization proble
 The task is therefore very simple: Again, decision variables are limited by constraints. Therefore, there is a range of possible values for each decision variable. According to the three scenarios described, these only contain discrete values. Depending on the scenario, additional constraints now act on the decision variables, causing the range of possible values to be potentially smaller. All this data is saved in an excel spreadsheet. To solve the linear optimization problem, i.e. determining the optimal number of duck and fish bath toys to be produced, the spreadsheet solver package introduces the excel solver function. Here, decision variable cells, the objective function and constraints must be entered manually using the solver GUI. The excel solver determines the optimal values of the decision variables and updates the corresponding cells in the excel spreadsheet.
 
 
-Milton \cite{Milton2009} also visualizes various charts such as representations of feasible region in a 2D plot with or without marking the optimal solution. Based on a data set with historical sales, the demand is predicted by an analyst. Accordingly, the time series of sales per product and sales in total are visualized in a chart. Depending on the analyst's observations, a new constraint per product is subsequently added, which in turn can affect the feasible region.
+Milton \cite{Milton2009} also visualizes various charts such as representations of feasible region in a 2D plot with or without marking the optimal solution. The scenarios described only contain discrete values and are all limited to two decision variables. Based on a data set with historical sales, the demand is predicted by an analyst. Accordingly, the time series of sales per product and sales in total are visualized in a chart. Depending on the analyst's observations, a new constraint per product is subsequently added, which in turn can affect the feasible region.
 
 
 
@@ -98,7 +98,7 @@ Milton \cite{Milton2009} also visualizes various charts such as representations 
 To achieve reproducibility, one would need to accomplish the same results with the artifacts of Milton \cite{Milton2009}. The computations would have to take place in the same environment, i.e. under the same conditions, and run in exactly the same sequential order. By manually going through the described steps for the individual scenarios based on the excel spreadsheet, which was made publicly available using gitlab, I was able to generate the same new decision variable values using the spreadsheet solver. However, this did not take place under the exact same experimental setup, which is why this success only corresponds to a replication.
 
 
-Moreover, it was impossible to generate identical charts, as the necessary scripts are not publicly available as artifacts. Furthermore, not even the final charts themselves are published. Therefore, the image comparison is not possible at all, even though the underlying historical sales data has been published. But even with this data it is impossible to generate the exact identical chart, since information regarding color values, font size, limitation of axes etc. is missing. Hence, not only the reproduction, but also the replication of the project as a whole is impossible, resulting in a partial replication at most.
+Moreover, it was impossible to generate identical charts, as the necessary scripts are not publicly available as artifacts. Furthermore, not even the final charts themselves are published. Therefore, the image comparison is not possible at all, even though the underlying historical sales data has been published. But even with this data it is impossible to generate the exact identical chart, since information regarding color values, font size, limitation of axes etc. is missing. Hence, not only the reproduction, but also the replication of the project as a whole is impossible, resulting in a partial replication at most. The scope of this work is defined more precisely in the following section.
 
 
 
